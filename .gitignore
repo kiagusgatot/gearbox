@@ -1,27 +1,30 @@
-# Ignore dependencies
-**/node_modules/
-**/vendor/
-
-# Ignore environment files
-**/.env
-**/.env.local
-**/.env.*.local
-
-# Ignore OS files
+# IDEs and OS files
+.idea/
+.vscode/
 .DS_Store
 Thumbs.db
-
-# Ignore IDE files
-.vscode/
-.idea/
-
-# Ignore build artifacts
-**/dist/
-**/build/
-**/public/storage
-
-# Ignore logs
-**/logs/
 *.log
 chrome-profile/
-rendered_dom.html
+
+# Backend patterns
+backend/vendor/
+backend/node_modules/
+backend/bootstrap/cache/*
+backend/storage/*.key
+backend/storage/framework/cache/data/*
+backend/storage/framework/views/*
+backend/storage/framework/sessions/*
+backend/storage/framework/testing/*
+backend/.env
+backend/.env.backup
+backend/.phpunit.result.cache
+
+# Frontend patterns
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/build/
+frontend/cache/
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
