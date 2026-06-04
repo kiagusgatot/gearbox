@@ -73,7 +73,7 @@ export function AdminUsers() {
 
         <div className="flex flex-col sm:flex-row gap-4 mb-6">
           <Input icon={Search} placeholder="Cari user..." value={q} onChange={e => setQ(e.target.value)} className="max-w-xs"/>
-          <div className="flex gap-2">{['all','customer','mechanic','admin'].map(f => <button key={f} onClick={() => setFilter(f)} className={`px-3 py-1.5 rounded-lg text-xs font-medium ${filter === f ? 'bg-primary-600 text-white' : 'bg-white text-gray-600 border border-gray-200'}`}>{f === 'all' ? 'Semua' : ROLE_STYLE[f]?.label}</button>)}</div>
+          <div className="flex gap-2">{['all','customer','mechanic','admin'].map(f => <button key={f} onClick={() => setFilter(f)} className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${filter === f ? 'bg-gray-900 text-white font-semibold shadow-sm' : 'bg-white text-gray-600 border border-gray-200 hover:border-primary-500'}`}>{f === 'all' ? 'Semua' : ROLE_STYLE[f]?.label}</button>)}</div>
         </div>
 
         {loading ? <Loading/> : filtered.length === 0 ? <EmptyState icon={Users} title="Tidak ada user"/> : (

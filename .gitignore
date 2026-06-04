@@ -6,15 +6,28 @@ Thumbs.db
 *.log
 chrome-profile/
 
+# Generic patterns
+node_modules/
+vendor/
+.env
+.env.local
+.env.*.local
+dist/
+build/
+dist-ssr/
+cache/
+
 # Backend patterns
 backend/vendor/
 backend/node_modules/
 backend/bootstrap/cache/*
 backend/storage/*.key
 backend/storage/framework/cache/data/*
+backend/storage/framework/cache/*
 backend/storage/framework/views/*
 backend/storage/framework/sessions/*
 backend/storage/framework/testing/*
+backend/storage/logs/*.log
 backend/.env
 backend/.env.backup
 backend/.phpunit.result.cache

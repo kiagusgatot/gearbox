@@ -55,7 +55,7 @@ export function PhotoCapture({ photos = [], onPhotosChange, maxPhotos = 3, label
           <button
             type="button"
             onClick={() => fileRef.current?.click()}
-            className="w-16 h-16 rounded-xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 hover:border-primary-400 hover:text-primary-600 transition-colors"
+            className="w-16 h-16 rounded-xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 hover:border-primary-500 hover:text-gray-900 transition-colors"
           >
             <Camera size={18}/>
             <span className="text-[10px] mt-0.5">Foto</span>

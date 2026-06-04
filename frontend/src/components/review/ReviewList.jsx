@@ -53,7 +53,7 @@ export function ReviewList({ serviceId, maxDisplay = 5 }) {
 
       {reviews.length > maxDisplay && !showAll && (
         <button onClick={() => setShowAll(true)}
-          className="w-full text-center py-3 text-primary-600 hover:bg-primary-50 rounded-xl font-medium transition-colors">
+          className="w-full text-center py-3 text-gray-900 hover:bg-gray-100 rounded-xl font-semibold transition-colors">
           Lihat {reviews.length - maxDisplay} review lainnya
         </button>
       )}

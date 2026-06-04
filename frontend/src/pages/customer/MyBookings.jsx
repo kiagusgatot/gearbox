@@ -44,12 +44,12 @@ export function MyBookings() {
         <div className="flex gap-2 overflow-x-auto pb-3 mb-6">
           {TABS.map(t => (
             <button key={t.key} onClick={() => setTab(t.key)}
-              className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-colors flex items-center gap-1.5 ${
-                tab===t.key ? 'bg-primary-600 text-white' : 'bg-white text-gray-600 border border-gray-200 hover:border-primary-300'
+              className={`px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap transition-colors flex items-center gap-1.5 ${
+                tab===t.key ? 'bg-gray-900 text-white font-semibold shadow-sm' : 'bg-white text-gray-600 border border-gray-200 hover:border-primary-500'
               }`}>
               {t.label}
               {t.key === 'estimation' && estimationCount > 0 && (
-                <span className={`w-5 h-5 rounded-full text-xs flex items-center justify-center ${tab===t.key ? 'bg-white text-primary-600' : 'bg-red-500 text-white'}`}>{estimationCount}</span>
+                <span className={`w-5 h-5 rounded-full text-xs flex items-center justify-center ${tab===t.key ? 'bg-white text-gray-900 font-bold' : 'bg-red-500 text-white'}`}>{estimationCount}</span>
               )}
             </button>
           ))}
@@ -64,13 +64,13 @@ export function MyBookings() {
                   <StatusBadge status={b.status}/>
                 </div>
                 <div className="flex flex-wrap gap-4 text-sm text-gray-500">
-                  <span className="flex items-center gap-2"><Calendar size={15} className="text-primary-600"/>{formatDate(b.scheduled_date)}</span>
-                  <span className="flex items-center gap-2"><Clock size={15} className="text-primary-600"/>{formatTime(b.scheduled_time)}</span>
+                  <span className="flex items-center gap-2"><Calendar size={15} className="text-primary-500"/>{formatDate(b.scheduled_date)}</span>
+                  <span className="flex items-center gap-2"><Clock size={15} className="text-primary-500"/>{formatTime(b.scheduled_time)}</span>
                 </div>
                 {b.status === 'estimation_sent' && <div className="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-800 font-medium flex items-center gap-2"><ClipboardList size={16}/>Estimasi biaya perlu persetujuan Anda</div>}
                 {b.status === 'waiting_payment' && <div className="mt-3 p-3 bg-orange-50 border border-orange-200 rounded-xl text-sm text-orange-800 font-medium flex items-center gap-2"><CreditCard size={16}/>Silakan bayar di kasir bengkel</div>}
                 <div className="mt-4 pt-4 border-t border-gray-100 flex justify-between items-center">
-                  <span className="text-xs text-gray-400">ID: {b.id?.substring(0,8)}</span>
+                  <span className="text-xs text-gray-400">Kode Booking: {b.booking_code || b.id?.substring(0, 8)}</span>
                   <ArrowRight size={18} className="text-gray-400"/>
                 </div>
               </div>

@@ -9,7 +9,7 @@ class PaymentController extends Controller
 {
     public function index()
     {
-        return response()->json(['data' => Payment::all()]);
+        return response()->json(['data' => Payment::with('booking')->get()]);
     }
 
     public function store(Request $request)
@@ -55,7 +55,7 @@ class PaymentController extends Controller
                     'user_id' => $booking->user_id,
                     'type' => 'payment_success',
                     'title' => 'Pembayaran Berhasil',
-                    'message' => 'Pembayaran Anda sebesar Rp ' . number_format($item->amount, 0, ',', '.') . ' untuk booking ' . substr($booking->id, 0, 8) . ' telah berhasil diterima. Terima kasih!',
+                    'message' => 'Pembayaran Anda sebesar Rp ' . number_format($item->amount, 0, ',', '.') . ' untuk booking ' . $booking->booking_code . ' telah berhasil diterima. Terima kasih!',
                     'is_read' => false,
                     'action_url' => '/bookings/' . $booking->id,
                     'related_id' => $booking->id,

@@ -23,7 +23,7 @@ export function AvailabilityCalendar({ serviceId, selectedDate, onDateSelect, di
 
   if (loading) {
     return <div className="flex items-center justify-center py-6">
-      <Loader2 size={24} className="text-primary-600 animate-spin mr-2"/>
+      <Loader2 size={24} className="text-primary-500 animate-spin mr-2"/>
       <span className="text-sm text-gray-500">Memuat ketersediaan...</span>
     </div>;
   }
@@ -73,7 +73,7 @@ export function AvailabilityCalendar({ serviceId, selectedDate, onDateSelect, di
               onClick={() => !disabled && isAvailable && onDateSelect(day.date)}
               disabled={disabled || !isAvailable}
               className={`p-2.5 rounded-xl border-2 transition-all text-center ${
-                isSelected ? 'border-primary-600 bg-primary-50 ring-2 ring-primary-200'
+                isSelected ? 'border-primary-500 bg-primary-50 ring-2 ring-primary-100 font-bold'
                 : isAvailable ? 'border-green-200 bg-green-50 hover:border-green-400 cursor-pointer'
                 : 'border-red-200 bg-red-50 cursor-not-allowed opacity-60'
               }`}>

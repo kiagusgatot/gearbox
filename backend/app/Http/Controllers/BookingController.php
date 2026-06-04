@@ -158,6 +158,7 @@ class BookingController extends Controller
         return response()->json([
             'data' => [
                 'booking_id' => $booking->id,
+                'booking_code' => $booking->booking_code,
                 'service_name' => $service ? $service->name : null,
                 'base_price' => (float) $basePrice,
                 'inspection_cost' => (float) $inspectionCost,

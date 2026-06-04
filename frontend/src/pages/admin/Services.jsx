@@ -13,7 +13,7 @@ const CAT_STYLE = {
   routine:     { label:'Routine',     color:'bg-blue-100 text-blue-700' },
   maintenance: { label:'Maintenance', color:'bg-orange-100 text-orange-700' },
   repair:      { label:'Repair',      color:'bg-red-100 text-red-700' },
-  parts:       { label:'Parts',       color:'bg-purple-100 text-purple-700' },
+  parts:       { label:'Parts',       color:'bg-teal-100 text-teal-700' },
   other:       { label:'Lainnya',     color:'bg-gray-100 text-gray-700' },
 };
 
@@ -151,15 +151,15 @@ export function AdminServices() {
               </div>
             )}
             {!uploading ? (
-              <label className="flex items-center justify-center gap-2 w-full py-3 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-primary-400 hover:bg-primary-50 transition-colors">
+              <label className="flex items-center justify-center gap-2 w-full py-3 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-primary-500 hover:bg-primary-50 transition-colors">
                 <Image size={18} className="text-gray-400"/>
                 <span className="text-sm text-gray-600">{f.image_url ? 'Ganti Gambar' : 'Upload Gambar'}</span>
                 <input type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={handleImageUpload}/>
               </label>
             ) : (
-              <div className="flex items-center justify-center gap-2 w-full py-3 border-2 border-dashed border-primary-300 rounded-xl bg-primary-50">
-                <div className="w-4 h-4 border-2 border-primary-600 border-t-transparent rounded-full animate-spin"/>
-                <span className="text-sm text-primary-600">Mengupload...</span>
+              <div className="flex items-center justify-center gap-2 w-full py-3 border-2 border-dashed border-primary-500 rounded-xl bg-primary-50">
+                <div className="w-4 h-4 border-2 border-gray-900 border-t-transparent rounded-full animate-spin"/>
+                <span className="text-sm text-gray-900 font-semibold">Mengupload...</span>
               </div>
             )}
             <p className="text-xs text-gray-400 mt-1">Format: JPG, PNG, WebP. Maksimal 2MB.</p>
@@ -169,11 +169,11 @@ export function AdminServices() {
             <Input label="Biaya Tenaga Kerja (Rp)" name="labor_price" type="number" value={f.labor_price} onChange={h} placeholder="50000" required/>
             <Input label="Biaya Suku Cadang (Rp)" name="parts_price" type="number" value={f.parts_price} onChange={h} placeholder="100000" required/>
           </div>
-          {f.labor_price && f.parts_price && <div className="p-3 bg-primary-50 border border-primary-200 rounded-xl flex justify-between items-center"><span className="text-sm text-gray-700">Total Harga</span><span className="font-bold text-primary-600">{formatCurrency(Number(f.labor_price)+Number(f.parts_price))}</span></div>}
+          {f.labor_price && f.parts_price && <div className="p-3 bg-primary-50 border border-primary-200 rounded-xl flex justify-between items-center"><span className="text-sm text-gray-700">Total Harga</span><span className="font-extrabold text-gray-900">{formatCurrency(Number(f.labor_price)+Number(f.parts_price))}</span></div>}
 
           <div className="grid grid-cols-3 gap-4">
             <Input label="Durasi (menit)" name="estimated_duration" type="number" value={f.estimated_duration} onChange={h} placeholder="60"/>
-            <div><label className="block text-sm font-medium text-gray-700 mb-2">Kategori</label><select name="category" value={f.category} onChange={h} className="input-field"><option value="routine">Routine</option><option value="maintenance">Maintenance</option><option value="repair">Repair</option></select></div>
+            <div><label className="block text-sm font-medium text-gray-700 mb-2">Kategori</label><select name="category" value={f.category} onChange={h} className="input-field"><option value="routine">Routine</option><option value="maintenance">Maintenance</option><option value="repair">Repair</option><option value="parts">Parts</option><option value="other">Lainnya</option></select></div>
             <Input label="Max Slot/Hari" name="max_booking_per_day" type="number" value={f.max_booking_per_day} onChange={h} placeholder="8"/>
           </div>
 

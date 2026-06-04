@@ -1,12 +1,12 @@
 import { useNavigate } from 'react-router-dom';
-import { Clock, Star, DollarSign, Tag } from 'lucide-react';
+import { Clock, Star, DollarSign, Tag, Wrench } from 'lucide-react';
 import { formatCurrency } from '../../utils/formatters';
 
 const CATEGORY_COLORS = {
   routine:      { bg: 'bg-blue-100',   text: 'text-blue-700',   label: 'Routine' },
   maintenance:  { bg: 'bg-orange-100', text: 'text-orange-700', label: 'Maintenance' },
   repair:       { bg: 'bg-red-100',    text: 'text-red-700',    label: 'Repair' },
-  parts:        { bg: 'bg-purple-100', text: 'text-purple-700', label: 'Parts' },
+  parts:        { bg: 'bg-teal-100',   text: 'text-teal-700',   label: 'Parts' },
   other:        { bg: 'bg-gray-100',   text: 'text-gray-700',   label: 'Lainnya' },
 };
 
@@ -21,10 +21,18 @@ export function ServiceCard({ service }) {
       onClick={() => nav(`/services/${service.id}`)}
       className="card-hover group cursor-pointer space-y-3"
     >
+      {service.image_url ? (
+        <img src={service.image_url} alt={service.name} 
+          className="w-full h-40 object-cover rounded-xl mb-3"/>
+      ) : (
+        <div className="w-full h-40 bg-gray-100 rounded-xl mb-3 flex items-center justify-center">
+          <Wrench size={32} className="text-gray-400"/>
+        </div>
+      )}
       {/* Header with category badge */}
       <div className="flex justify-between items-start gap-3">
         <div className="flex-1">
-          <h3 className="text-lg font-bold text-gray-900 group-hover:text-primary-600 transition-colors">
+          <h3 className="text-lg font-bold text-gray-900 group-hover:underline decoration-primary-500 decoration-2 transition-all">
             {service.name}
           </h3>
           <p className="text-sm text-gray-500 mt-1 line-clamp-2">{service.description || 'Layanan profesional'}</p>
@@ -66,13 +74,13 @@ export function ServiceCard({ service }) {
         </div>
         <div className="border-t border-gray-200 pt-2 flex justify-between items-center font-bold">
           <span className="text-gray-900">Total</span>
-          <span className="text-primary-600 text-base">{formatCurrency(service.base_price || service.labor_price + service.parts_price)}</span>
+          <span className="text-gray-900 text-base font-extrabold">{formatCurrency(service.base_price || service.labor_price + service.parts_price)}</span>
         </div>
       </div>
 
       {/* Duration */}
       <div className="flex items-center gap-2 text-sm text-gray-600">
-        <Clock size={16} className="text-primary-600"/>
+        <Clock size={16} className="text-primary-500"/>
         {service.estimated_duration} menit
       </div>
     </div>

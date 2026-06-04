@@ -50,7 +50,7 @@ export function AdminPayments() {
           </div>
           <div className="bg-white rounded-xl border border-gray-200 p-4">
             <p className="text-xs text-gray-500">Total Pendapatan</p>
-            <p className="text-2xl font-bold text-primary-600">{formatCurrency(totalSuccess)}</p>
+            <p className="text-2xl font-extrabold text-gray-900">{formatCurrency(totalSuccess)}</p>
           </div>
         </div>
 
@@ -59,7 +59,7 @@ export function AdminPayments() {
           <div className="flex gap-2">
             {['all', 'success', 'pending', 'failed'].map(f => (
               <button key={f} onClick={() => setFilter(f)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium ${filter === f ? 'bg-primary-600 text-white' : 'bg-white text-gray-600 border border-gray-200'}`}>
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${filter === f ? 'bg-gray-900 text-white font-semibold shadow-sm' : 'bg-white text-gray-600 border border-gray-200 hover:border-primary-500'}`}>
                 {f === 'all' ? 'Semua' : f === 'success' ? 'Lunas' : f === 'pending' ? 'Pending' : 'Gagal'}
               </button>
             ))}
@@ -72,7 +72,7 @@ export function AdminPayments() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-gray-50 border-b border-gray-200">
-                    <th className="text-left px-4 py-3 font-semibold text-gray-600">ID</th>
+                    <th className="text-left px-4 py-3 font-semibold text-gray-600">Kode Booking</th>
                     <th className="text-left px-4 py-3 font-semibold text-gray-600">Tanggal</th>
                     <th className="text-right px-4 py-3 font-semibold text-gray-600">Nominal</th>
                     <th className="text-left px-4 py-3 font-semibold text-gray-600">Metode</th>
@@ -86,7 +86,7 @@ export function AdminPayments() {
                     const st = STATUS_STYLE[p.status] || STATUS_STYLE.pending;
                     return (
                       <tr key={p.id} className="hover:bg-gray-50 transition-colors">
-                        <td className="px-4 py-3 text-xs text-gray-400 font-mono">{p.id?.substring(0, 8)}</td>
+                        <td className="px-4 py-3 text-xs text-gray-400 font-mono">{p.booking?.booking_code || p.booking_id?.substring(0, 8)}</td>
                         <td className="px-4 py-3 text-gray-600 whitespace-nowrap">{formatDateTime(p.created_at)}</td>
                         <td className="px-4 py-3 text-right font-bold text-gray-900">{formatCurrency(p.amount)}</td>
                         <td className="px-4 py-3 text-gray-600">{getMethodLabel(p.method)}</td>

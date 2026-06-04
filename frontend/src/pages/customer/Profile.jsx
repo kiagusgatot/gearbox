@@ -42,8 +42,8 @@ export function Profile() {
         <div className="card">
           {/* Avatar + Name */}
           <div className="flex items-center gap-4 mb-6 pb-6 border-b border-gray-200">
-            <div className="w-16 h-16 bg-primary-100 rounded-2xl flex items-center justify-center flex-shrink-0">
-              <User size={28} className="text-primary-600"/>
+            <div className="w-16 h-16 bg-primary-500 rounded-2xl flex items-center justify-center flex-shrink-0">
+              <User size={28} className="text-gray-900"/>
             </div>
             <div className="flex-1">
               {editing ? (
@@ -56,7 +56,7 @@ export function Profile() {
               )}
             </div>
             {!editing && (
-              <button onClick={() => setEditing(true)} className="p-2 hover:bg-gray-100 rounded-xl text-gray-400 hover:text-primary-600 transition-colors">
+              <button onClick={() => setEditing(true)} className="p-2 hover:bg-gray-100 rounded-xl text-gray-400 hover:text-gray-900 transition-colors">
                 <Pencil size={18}/>
               </button>
             )}

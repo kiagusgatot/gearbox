@@ -21,4 +21,6 @@ export const bookingService = {
   getChecklist:      (id)       => api.get(`/bookings/${id}/checklist`).then(r => r.data),
   toggleChecklist:   (bookingId, itemId, data) => api.put(`/bookings/${bookingId}/checklist/${itemId}`, data).then(r => unwrap(r)),
   completeService:   (id)       => api.put(`/bookings/${id}/complete-service`).then(r => unwrap(r)),
+  getActivityLogs:   (params)   => api.get('/activity-logs', { params }).then(r => unwrap(r)),
+  getBookingLogs:    (id, params) => api.get(`/bookings/${id}/logs`, { params }).then(r => unwrap(r)),
 };

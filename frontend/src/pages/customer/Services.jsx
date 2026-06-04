@@ -49,10 +49,10 @@ export function Services() {
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
+                className={`px-4 py-2 rounded-xl text-sm font-semibold transition-colors ${
                   selectedCategory === cat
-                    ? 'bg-primary-600 text-white'
-                    : 'bg-white text-gray-600 border border-gray-200 hover:border-primary-300'
+                    ? 'bg-gray-900 text-white font-semibold shadow-sm'
+                    : 'bg-white text-gray-600 border border-gray-200 hover:border-primary-500'
                 }`}
               >
                 {categoryLabels[cat]}

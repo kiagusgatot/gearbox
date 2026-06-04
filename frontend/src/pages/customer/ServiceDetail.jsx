@@ -20,7 +20,7 @@ const CATEGORY_DISPLAY = {
 };
 const CATEGORY_COLORS = {
   routine: 'bg-blue-100 text-blue-700', maintenance: 'bg-orange-100 text-orange-700',
-  repair: 'bg-red-100 text-red-700', parts: 'bg-purple-100 text-purple-700', other: 'bg-gray-100 text-gray-700'
+  repair: 'bg-red-100 text-red-700', parts: 'bg-teal-100 text-teal-700', other: 'bg-gray-100 text-gray-700'
 };
 
 export function ServiceDetail() {
@@ -74,10 +74,8 @@ export function ServiceDetail() {
     setSub(true);
     setBookError('');
     const payload = { ...form, service_id: svc.id, user_id: user?.id };
-    console.log('Booking payload:', payload);
     try {
       const res = await bookingService.create(payload);
-      console.log('Booking response:', res);
       setModal(false); setStep('form'); nav('/bookings');
     } catch (e) {
       console.error('Booking error:', e);
@@ -121,15 +119,20 @@ export function ServiceDetail() {
   return (
     <div className="min-h-screen bg-gray-50 py-8 md:py-12 px-4">
       <div className="max-w-4xl mx-auto">
-        <button onClick={() => nav(-1)} className="flex items-center gap-2 text-gray-500 hover:text-primary-600 mb-6 transition-colors">
+        <button onClick={() => nav(-1)} className="flex items-center gap-2 text-gray-500 hover:text-gray-900 mb-6 transition-all hover:underline">
           <ArrowLeft size={20}/>Kembali
         </button>
 
         {/* Service Header Card */}
         <div className="card">
-          <div className="bg-primary-50 rounded-2xl h-48 flex items-center justify-center mb-6">
-            <CheckCircle size={60} className="text-primary-300"/>
-          </div>
+          {svc.image_url ? (
+            <img src={svc.image_url} alt={name} 
+              className="w-full h-64 object-cover rounded-2xl mb-6 shadow-sm"/>
+          ) : (
+            <div className="bg-primary-50 rounded-2xl h-48 flex items-center justify-center mb-6">
+              <CheckCircle size={60} className="text-primary-500 fill-primary-500"/>
+            </div>
+          )}
           <div className="mb-6 pb-6 border-b border-gray-200">
             <span className={`inline-block px-3 py-1 rounded-lg text-xs font-semibold mb-3 ${catColor}`}>{catDisplay}</span>
             <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">{name}</h1>
@@ -152,14 +155,14 @@ export function ServiceDetail() {
               <div className="space-y-2">
                 <div className="flex justify-between text-sm"><span className="text-gray-600">Tenaga Kerja</span><span className="font-semibold">{formatCurrency(laborPrice)}</span></div>
                 <div className="flex justify-between text-sm"><span className="text-gray-600">Suku Cadang</span><span className="font-semibold">{formatCurrency(partsPrice)}</span></div>
-                <div className="flex justify-between text-sm font-bold pt-2 border-t border-gray-200"><span>Total</span><span className="text-primary-600 text-lg">{formatCurrency(basePrice)}</span></div>
+                <div className="flex justify-between text-sm font-bold pt-2 border-t border-gray-200"><span>Total</span><span className="text-gray-900 font-extrabold text-lg">{formatCurrency(basePrice)}</span></div>
               </div>
             </div>
             <div>
               <p className="text-sm font-medium text-gray-500 mb-3">Informasi Layanan</p>
               <div className="space-y-3">
-                <div className="flex items-center gap-2 text-sm"><Clock size={16} className="text-primary-600"/><span>Durasi: <strong>{duration} menit</strong></span></div>
-                <div className="flex items-center gap-2 text-sm"><CheckCircle size={16} className="text-primary-600"/><span>Slot tersedia: <strong>{maxBooking}/hari</strong></span></div>
+                <div className="flex items-center gap-2 text-sm"><Clock size={16} className="text-primary-500"/><span>Durasi: <strong>{duration} menit</strong></span></div>
+                <div className="flex items-center gap-2 text-sm"><CheckCircle size={16} className="text-primary-500"/><span>Slot tersedia: <strong>{maxBooking}/hari</strong></span></div>
               </div>
             </div>
           </div>
@@ -191,13 +194,13 @@ export function ServiceDetail() {
         {/* Service Summary */}
         <div className="p-3 bg-primary-50 border border-primary-200 rounded-xl flex items-center gap-3 mb-5">
           <div className="w-10 h-10 bg-primary-200 rounded-xl flex items-center justify-center flex-shrink-0">
-            <Wrench size={20} className="text-primary-700"/>
+            <Wrench size={20} className="text-gray-900"/>
           </div>
           <div className="flex-1 min-w-0">
             <p className="font-bold text-gray-900 text-sm truncate">{name}</p>
             <p className="text-xs text-gray-600">{catDisplay} · {duration} menit</p>
           </div>
-          <p className="font-bold text-primary-600 text-sm whitespace-nowrap">{formatCurrency(basePrice)}</p>
+          <p className="font-extrabold text-gray-900 text-sm whitespace-nowrap">{formatCurrency(basePrice)}</p>
         </div>
 
         {/* STEP 1: FORM */}
@@ -211,7 +214,7 @@ export function ServiceDetail() {
               </select>
               {!showAddVehicle && (
                 <button type="button" onClick={() => setShowAddVehicle(true)}
-                  className="mt-2 flex items-center gap-1.5 text-sm text-primary-600 hover:text-primary-700 font-medium">
+                  className="mt-2 flex items-center gap-1.5 text-sm text-gray-900 font-bold hover:underline">
                   <Plus size={16}/>Daftarkan Kendaraan Baru
                 </button>
               )}
@@ -221,7 +224,7 @@ export function ServiceDetail() {
               <div className="p-4 bg-primary-50 border border-primary-200 rounded-xl space-y-3">
                 <div className="flex justify-between items-center">
                   <p className="text-sm font-semibold text-primary-800 flex items-center gap-2"><Car size={16}/>Tambah Kendaraan Baru</p>
-                  <button type="button" onClick={() => setShowAddVehicle(false)} className="p-1 hover:bg-primary-100 rounded-lg"><X size={16} className="text-primary-600"/></button>
+                  <button type="button" onClick={() => setShowAddVehicle(false)} className="p-1 hover:bg-primary-200 rounded-lg"><X size={16} className="text-gray-900"/></button>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <Input label="Merk" name="brand" value={vf.brand} onChange={hv} placeholder="Toyota" required/>
@@ -273,7 +276,7 @@ export function ServiceDetail() {
                 { icon: Clock,    label: 'Jam',        value: form.scheduled_time ? form.scheduled_time + ' WIB' : '-' },
               ].map(item => (
                 <div key={item.label} className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
-                  <item.icon size={18} className="text-primary-600 flex-shrink-0"/>
+                  <item.icon size={18} className="text-primary-500 flex-shrink-0"/>
                   <div><p className="text-xs text-gray-400">{item.label}</p><p className="text-sm font-semibold text-gray-900">{item.value}</p></div>
                 </div>
               ))}
@@ -287,7 +290,7 @@ export function ServiceDetail() {
 
               <div className="p-3 bg-primary-50 border border-primary-200 rounded-xl flex justify-between items-center">
                 <span className="text-sm font-medium text-gray-700">Estimasi Biaya</span>
-                <span className="text-lg font-bold text-primary-600">{formatCurrency(basePrice)}</span>
+                <span className="text-lg font-bold text-gray-900">{formatCurrency(basePrice)}</span>
               </div>
             </div>
 

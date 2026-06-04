@@ -1,70 +1,122 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { authService } from '../services/authService';
-import { Wrench, CheckCircle, XCircle, Loader2 } from 'lucide-react';
+import { Wrench, Mail, Check } from 'lucide-react';
 
 export function VerifyEmail() {
   const [searchParams] = useSearchParams();
-  const [loading, setLoading] = useState(true);
+  const email = searchParams.get('email') || '';
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('');
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
 
-  useEffect(() => {
-    const token = searchParams.get('token');
-    const email = searchParams.get('email');
-
-    if (!token || !email) {
-      setError('Token verifikasi atau email tidak lengkap/tidak valid.');
+  const handleResend = async () => {
+    setLoading(true);
+    setMessage('');
+    setError('');
+    try {
+      const data = await authService.resendVerification(email);
+      setMessage(data.message || 'Link verifikasi berhasil dikirim ulang.');
+    } catch (e) {
+      setError(e.response?.data?.message || 'Gagal mengirim ulang email verifikasi.');
+    } finally {
       setLoading(false);
-      return;
     }
-
-    const verify = async () => {
-      try {
-        const data = await authService.verifyEmail({ token, email });
-        setSuccess(data.message || 'Email Anda berhasil diverifikasi!');
-      } catch (e) {
-        setError(e.response?.data?.message || 'Token verifikasi tidak valid atau e-mail salah.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    verify();
-  }, [searchParams]);
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4">
-      <div className="w-full max-w-md text-center">
-        <div className="mb-8">
-          <Wrench size={40} className="text-primary-600 mx-auto mb-4"/>
-          <h1 className="text-2xl font-bold text-gray-900">Verifikasi Email</h1>
+    <div className="min-h-screen flex">
+      {/* LEFT SIDE — Branding (hidden on mobile) */}
+      <div className="hidden lg:flex lg:w-1/2 bg-gray-900 p-12 flex-col justify-between">
+        <div>
+          {/* Logo */}
+          <div className="flex items-center gap-2.5 mb-16">
+            <div className="w-10 h-10 bg-yellow-400 rounded-xl flex items-center justify-center">
+              <Wrench size={20} className="text-gray-900"/>
+            </div>
+            <span className="text-xl font-bold text-white">GEARBOX</span>
+          </div>
+          
+          {/* Tagline */}
+          <h2 className="text-3xl font-bold text-white leading-tight mb-4">
+            Langkah terakhir untuk mengaktifkan akun <span className="text-yellow-400">GEARBOX</span> Anda
+          </h2>
+          <p className="text-gray-400 leading-relaxed mb-8">
+            Verifikasi email Anda diperlukan untuk memastikan keamanan akun dan menerima notifikasi update servis kendaraan secara langsung.
+          </p>
         </div>
-        <div className="card text-center py-8">
-          {loading && (
-            <div className="flex flex-col items-center py-6">
-              <Loader2 size={36} className="text-primary-600 animate-spin mb-4"/>
-              <p className="text-gray-600">Memproses verifikasi email Anda...</p>
+        
+        {/* Benefit list */}
+        <div className="space-y-4">
+          <div className="flex items-center gap-3">
+            <div className="w-6 h-6 bg-yellow-400/10 rounded-full flex items-center justify-center flex-shrink-0">
+              <Check size={14} className="text-yellow-400" />
+            </div>
+            <span className="text-gray-300 text-sm font-medium">Estimasi biaya transparan</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="w-6 h-6 bg-yellow-400/10 rounded-full flex items-center justify-center flex-shrink-0">
+              <Check size={14} className="text-yellow-400" />
+            </div>
+            <span className="text-gray-300 text-sm font-medium">Tracking service real-time</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="w-6 h-6 bg-yellow-400/10 rounded-full flex items-center justify-center flex-shrink-0">
+              <Check size={14} className="text-yellow-400" />
+            </div>
+            <span className="text-gray-300 text-sm font-medium">Inspeksi terdokumentasi</span>
+          </div>
+        </div>
+      </div>
+
+      {/* RIGHT SIDE — Pending View */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-white">
+        <div className="w-full max-w-md text-center">
+          {/* Mobile logo (hidden on desktop) */}
+          <div className="lg:hidden flex items-center justify-center gap-2 mb-8">
+            <div className="w-10 h-10 bg-yellow-400 rounded-xl flex items-center justify-center">
+              <Wrench size={20} className="text-gray-900"/>
+            </div>
+            <span className="text-xl font-bold text-gray-900">GEARBOX</span>
+          </div>
+
+          <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6 text-yellow-600">
+            <Mail size={32} />
+          </div>
+
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">Cek Email Anda</h1>
+          <p className="text-gray-600 mb-6">
+            Kami telah mengirimkan link verifikasi ke email{' '}
+            <span className="font-bold text-gray-900">{email || 'Anda'}</span>. 
+            Klik link di email tersebut untuk mengaktifkan akun Anda.
+          </p>
+
+          {message && (
+            <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl text-sm mb-5 text-left">
+              {message}
             </div>
           )}
 
-          {!loading && success && (
-            <div className="py-4">
-              <CheckCircle size={48} className="text-green-500 mx-auto mb-4"/>
-              <h2 className="text-lg font-bold text-gray-900 mb-2">{success}</h2>
-              <p className="text-gray-500 text-sm mb-6">Akun Anda sekarang telah aktif dan Anda dapat menggunakan seluruh layanan kami.</p>
-              <Link to="/login" className="btn btn-primary w-full inline-block py-2 rounded-xl font-semibold">Masuk ke Akun</Link>
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm mb-5 text-left">
+              {error}
             </div>
           )}
 
-          {!loading && error && (
-            <div className="py-4">
-              <XCircle size={48} className="text-red-500 mx-auto mb-4"/>
-              <h2 className="text-lg font-bold text-gray-900 mb-2">Verifikasi Gagal</h2>
-              <p className="text-red-600 text-sm mb-6">{error}</p>
-              <Link to="/login" className="text-primary-600 font-semibold hover:underline block text-sm">Kembali ke Login</Link>
-            </div>
-          )}
+          <button
+            onClick={handleResend}
+            disabled={loading}
+            className="w-full bg-yellow-400 text-black py-3 rounded-xl font-bold hover:bg-yellow-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mb-6"
+          >
+            {loading ? 'Mengirim...' : 'Kirim Ulang Email Verifikasi'}
+          </button>
+
+          <p className="text-sm text-gray-500">
+            Sudah verifikasi?{' '}
+            <Link to="/login" className="font-bold text-gray-900 hover:underline">
+              Masuk
+            </Link>
+          </p>
         </div>
       </div>
     </div>

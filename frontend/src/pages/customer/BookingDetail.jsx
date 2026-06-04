@@ -72,10 +72,10 @@ export function BookingDetail() {
   return (
     <div className="min-h-screen bg-gray-50 py-8 md:py-12 px-4">
       <div className="max-w-3xl mx-auto space-y-6">
-        <button onClick={()=>nav(-1)} className="flex items-center gap-2 text-gray-500 hover:text-primary-600 transition-colors"><ArrowLeft size={20}/>Kembali</button>
+        <button onClick={()=>nav(-1)} className="flex items-center gap-2 text-gray-500 hover:text-gray-900 hover:underline transition-all"><ArrowLeft size={20}/>Kembali</button>
         <div className="card">
-          <div className="flex justify-between items-start mb-6"><div><h1 className="text-xl font-bold text-gray-900">Detail Booking</h1><p className="text-sm text-gray-400 mt-1">ID: {b.id?.substring(0,8)}</p></div><StatusBadge status={b.status}/></div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">{infoItems.map(x=><div key={x.l} className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl"><x.i size={18} className="text-primary-600 flex-shrink-0"/><div><p className="text-xs text-gray-400">{x.l}</p><p className="text-sm font-semibold text-gray-900">{x.v}</p></div></div>)}</div>
+          <div className="flex justify-between items-start mb-6"><div><h1 className="text-xl font-bold text-gray-900">Detail Booking</h1><p className="text-sm text-gray-400 mt-1">Kode Booking: {b.booking_code || b.id?.substring(0,8)}</p></div><StatusBadge status={b.status}/></div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">{infoItems.map(x=><div key={x.l} className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl"><x.i size={18} className="text-primary-500 flex-shrink-0"/><div><p className="text-xs text-gray-400">{x.l}</p><p className="text-sm font-semibold text-gray-900">{x.v}</p></div></div>)}</div>
           {b.notes && <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-xl flex gap-3"><AlertCircle size={18} className="text-yellow-600 mt-0.5 flex-shrink-0"/><div><p className="text-sm font-medium text-yellow-900">Catatan Anda</p><p className="text-sm text-yellow-800">{b.notes}</p></div></div>}
           {b.status==='pending' && <div className="mt-4"><Button variant="danger" size="sm" onClick={handleCancel}>Batalkan Booking</Button></div>}
         </div>
@@ -89,7 +89,7 @@ export function BookingDetail() {
           <div className="bg-gray-50 rounded-xl p-4 space-y-2 mb-4">
             <div className="flex justify-between text-sm"><span className="text-gray-600">Harga Layanan</span><span className="font-medium">{formatCurrency(servicePrice)}</span></div>
             {items.length>0 && <><p className="text-xs font-medium text-gray-500 pt-2 border-t border-gray-200">Perbaikan Tambahan:</p>{items.map(item=><div key={item.id} className="flex justify-between text-sm pl-3"><span className="text-gray-600">{item.name} ({item.qty}x)</span><span className="font-medium">{formatCurrency(item.total_price)}</span></div>)}</>}
-            <div className="flex justify-between font-bold pt-2 border-t border-gray-200"><span className="text-gray-900">Total Estimasi</span><span className="text-primary-600 text-xl">{formatCurrency(totalCost)}</span></div>
+            <div className="flex justify-between font-bold pt-2 border-t border-gray-200"><span className="text-gray-900">Total Estimasi</span><span className="text-gray-900 font-extrabold text-xl">{formatCurrency(totalCost)}</span></div>
             {totalDuration>0 && <div className="flex justify-between text-sm"><span className="text-gray-500">Estimasi Durasi</span><span className="font-medium">{totalDuration} menit</span></div>}
           </div>
           <div className="flex gap-3">
@@ -101,24 +101,24 @@ export function BookingDetail() {
 
         {/* Estimation for other statuses */}
         {showEstimation && b.status!=='estimation_sent' && <div className="card">
-          <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2"><ClipboardList size={20} className="text-primary-600"/>Estimasi Biaya</h2>
+          <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2"><ClipboardList size={20} className="text-primary-500"/>Estimasi Biaya</h2>
           <div className="bg-gray-50 rounded-xl p-4 space-y-2">
             <div className="flex justify-between text-sm"><span className="text-gray-600">Harga Layanan</span><span className="font-medium">{formatCurrency(servicePrice)}</span></div>
             {items.length>0 && items.map(item=><div key={item.id} className="flex justify-between text-sm"><span className="text-gray-600">{item.name} ({item.qty}x)</span><span className="font-medium">{formatCurrency(item.total_price)}</span></div>)}
-            <div className="flex justify-between font-bold pt-2 border-t border-gray-200"><span>Total</span><span className="text-primary-600 text-lg">{formatCurrency(totalCost)}</span></div>
+            <div className="flex justify-between font-bold pt-2 border-t border-gray-200"><span>Total</span><span className="text-gray-900 font-extrabold text-lg">{formatCurrency(totalCost)}</span></div>
           </div>
           {b.status==='customer_approved' && <div className="mt-3 p-3 bg-lime-50 border border-lime-200 rounded-xl text-sm text-lime-800 flex items-center gap-2"><CheckCircle size={16}/>Estimasi disetujui. Menunggu bengkel memulai service.</div>}
         </div>}
 
         {/* Status messages */}
         {['confirmed','ready','inspection_done'].includes(b.status) && <div className="card border-blue-200 bg-blue-50"><p className="text-sm text-blue-800 font-medium">{b.status==='confirmed'?'Booking dikonfirmasi. Menunggu mekanik menerima job.':b.status==='ready'?'Mekanik sedang inspeksi kendaraan Anda.':'Inspeksi selesai. Menunggu estimasi biaya.'}</p></div>}
-        {['service_started','in_progress'].includes(b.status) && <div className="card border-purple-200 bg-purple-50 flex items-center gap-3"><Wrench size={20} className="text-purple-600 flex-shrink-0"/><div><p className="text-sm font-bold text-purple-900">{b.status==='service_started'?'Service akan segera dimulai':'Kendaraan sedang dikerjakan'}</p><p className="text-xs text-purple-700 mt-1">Mekanik: {b.mechanic?.name||'-'}</p></div></div>}
+        {['service_started','in_progress'].includes(b.status) && <div className="card border-blue-200 bg-blue-50 flex items-center gap-3"><Wrench size={20} className="text-blue-600 flex-shrink-0"/><div><p className="text-sm font-bold text-blue-900">{b.status==='service_started'?'Service akan segera dimulai':'Kendaraan sedang dikerjakan'}</p><p className="text-xs text-blue-700 mt-1">Mekanik: {b.mechanic?.name||'-'}</p></div></div>}
         {b.status==='waiting_payment' && <div className="card border-orange-200 bg-orange-50 flex items-start gap-3"><CreditCard size={20} className="text-orange-600 mt-0.5 flex-shrink-0"/><div><p className="text-sm font-bold text-orange-900 mb-1">Menunggu Pembayaran</p><p className="text-sm text-orange-800">Silakan bayar di kasir bengkel untuk mengambil kunci kendaraan.</p></div></div>}
 
         {/* Completed: Invoice + Review */}
-        {b.status==='completed' && invoice && <div className="card"><h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2"><FileText size={20} className="text-primary-600"/>Invoice</h2><div className="bg-gray-50 rounded-xl p-4 space-y-2 mb-4"><div className="flex justify-between text-sm"><span className="text-gray-600">Layanan</span><span className="font-medium">{b.service?.name}</span></div><div className="flex justify-between font-bold pt-2 border-t border-gray-200"><span>Total</span><span className="text-primary-600 text-lg">{formatCurrency(invoice.payment?.amount||totalCost)}</span></div></div><div className="p-3 bg-green-50 border border-green-200 rounded-xl flex items-center gap-2"><CheckCircle size={18} className="text-green-600"/><p className="text-sm text-green-800 font-medium">Pembayaran Lunas</p></div></div>}
-        {docs && ['waiting_payment','completed'].includes(b.status) && docs.findings && <div className="card"><h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2"><Camera size={20} className="text-primary-600"/>Dokumentasi</h2><div className="p-4 bg-gray-50 rounded-xl"><p className="text-sm text-gray-800">{docs.findings}</p></div></div>}
-        {b.status==='completed' && <div className="card"><h2 className="text-lg font-bold text-gray-900 mb-2 flex items-center gap-2"><Star size={20} className="text-primary-600"/>Beri Ulasan</h2>{!reviewSubmitted?<Button onClick={()=>setShowReview(true)}>Tulis Review</Button>:<div className="p-3 bg-green-50 border border-green-200 rounded-xl flex items-center gap-2"><CheckCircle size={18} className="text-green-600"/><p className="text-sm text-green-800 font-medium">Review sudah dikirim!</p></div>}</div>}
+        {b.status==='completed' && invoice && <div className="card"><h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2"><FileText size={20} className="text-primary-500"/>Invoice</h2><div className="bg-gray-50 rounded-xl p-4 space-y-2 mb-4"><div className="flex justify-between text-sm"><span className="text-gray-600">Layanan</span><span className="font-medium">{b.service?.name}</span></div><div className="flex justify-between font-bold pt-2 border-t border-gray-200"><span>Total</span><span className="text-gray-900 font-extrabold text-lg">{formatCurrency(invoice.payment?.amount||totalCost)}</span></div></div><div className="p-3 bg-green-50 border border-green-200 rounded-xl flex items-center gap-2"><CheckCircle size={18} className="text-green-600"/><p className="text-sm text-green-800 font-medium">Pembayaran Lunas</p></div></div>}
+        {docs && ['waiting_payment','completed'].includes(b.status) && docs.findings && <div className="card"><h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2"><Camera size={20} className="text-primary-500"/>Dokumentasi</h2><div className="p-4 bg-gray-50 rounded-xl"><p className="text-sm text-gray-800">{docs.findings}</p></div></div>}
+        {b.status==='completed' && <div className="card"><h2 className="text-lg font-bold text-gray-900 mb-2 flex items-center gap-2"><Star size={20} className="text-primary-500"/>Beri Ulasan</h2>{!reviewSubmitted?<Button onClick={()=>setShowReview(true)}>Tulis Review</Button>:<div className="p-3 bg-green-50 border border-green-200 rounded-xl flex items-center gap-2"><CheckCircle size={18} className="text-green-600"/><p className="text-sm text-green-800 font-medium">Review sudah dikirim!</p></div>}</div>}
       </div>
 
       <Modal isOpen={showReview} onClose={()=>setShowReview(false)} title="Tulis Ulasan">

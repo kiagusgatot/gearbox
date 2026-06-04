@@ -30,7 +30,9 @@ class AuthController extends Controller
         // Check email verification status
         if (!$user->email_verified_at) {
             return response()->json([
-                'message' => 'Email Anda belum diverifikasi. Silakan cek email Anda.'
+                'message' => 'Email belum diverifikasi. Silakan cek email Anda.',
+                'error_code' => 'email_not_verified',
+                'user_id' => $user->id
             ], 403);
         }
 
@@ -69,13 +71,29 @@ class AuthController extends Controller
             'customer'
         );
 
-        // Send simulated verification email by writing to log
-        $verificationUrl = "http://localhost:5173/verify-email?token={$user->verification_token}&email=" . urlencode($user->email);
-        Log::info("Simulated Email Verification Sent to {$user->email}: Link -> {$verificationUrl}");
+        // Log verification link for fallback/debugging
+        try {
+            $verifyUrl = \Illuminate\Support\Facades\URL::temporarySignedRoute(
+                'verification.verify',
+                now()->addMinutes(60),
+                ['id' => $user->id, 'hash' => sha1($user->email)]
+            );
+            Log::info("Simulated Email Verification Sent to {$user->email}: Link -> {$verifyUrl}");
+        } catch (\Exception $e) {
+            Log::error("Gagal men-generate log link verifikasi: " . $e->getMessage());
+        }
+
+        // Send email verification notification
+        try {
+            $user->sendEmailVerificationNotification();
+        } catch (\Exception $e) {
+            Log::error("Gagal mengirim email verifikasi ke {$user->email} via SMTP: " . $e->getMessage());
+        }
 
         return response()->json([
             'message' => 'Registrasi berhasil. Silakan cek email Anda untuk melakukan verifikasi.',
-            'user' => $user
+            'user' => $user,
+            'data' => $user
         ], 201);
     }
 
@@ -101,67 +119,6 @@ class AuthController extends Controller
         }
 
         return response()->json($user);
-    }
-
-    public function forgotPassword(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email|exists:users,email',
-        ], [
-            'email.exists' => 'Email tidak terdaftar dalam sistem.'
-        ]);
-
-        $token = Str::random(60);
-
-        // Insert or update token in password_reset_tokens
-        DB::table('password_reset_tokens')->updateOrInsert(
-            ['email' => $request->email],
-            [
-                'token' => Hash::make($token),
-                'created_at' => now()
-            ]
-        );
-
-        // Send simulated password reset link by writing to log
-        $resetUrl = "http://localhost:5173/reset-password?token={$token}&email=" . urlencode($request->email);
-        Log::info("Simulated Password Reset Sent to {$request->email}: Link -> {$resetUrl}");
-
-        return response()->json([
-            'message' => 'Link reset password telah dikirim ke email Anda.'
-        ]);
-    }
-
-    public function resetPassword(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email|exists:users,email',
-            'token' => 'required',
-            'password' => 'required|min:6|confirmed',
-        ], [
-            'password.confirmed' => 'Konfirmasi password tidak cocok.'
-        ]);
-
-        $resetRecord = DB::table('password_reset_tokens')
-            ->where('email', $request->email)
-            ->first();
-
-        if (!$resetRecord || !Hash::check($request->token, $resetRecord->token)) {
-            return response()->json([
-                'message' => 'Token reset password tidak valid atau kedaluwarsa.'
-            ], 422);
-        }
-
-        // Update user's password
-        $user = User::where('email', $request->email)->first();
-        $user->password = bcrypt($request->password);
-        $user->save();
-
-        // Delete token
-        DB::table('password_reset_tokens')->where('email', $request->email)->delete();
-
-        return response()->json([
-            'message' => 'Password Anda berhasil diubah. Silakan login kembali.'
-        ]);
     }
 
     public function verifyEmail(Request $request)

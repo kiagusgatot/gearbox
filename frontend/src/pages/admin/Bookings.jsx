@@ -52,7 +52,7 @@ export function AdminBookings() {
 
         <div className="flex gap-2 overflow-x-auto pb-3 mb-6">
           {TABS.map(t => <button key={t.key} onClick={() => setTab(t.key)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${tab === t.key ? 'bg-primary-600 text-white' : 'bg-white text-gray-600 border border-gray-200 hover:border-primary-300'}`}>
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${tab === t.key ? 'bg-gray-900 text-white font-semibold shadow-sm' : 'bg-white text-gray-600 border border-gray-200 hover:border-primary-500'}`}>
             {t.label} {t.key !== 'all' && `(${list.filter(b => b.status === t.key).length})`}
           </button>)}
         </div>
@@ -63,7 +63,7 @@ export function AdminBookings() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-gray-50 border-b border-gray-200">
-                    <th className="text-left px-4 py-3 font-semibold text-gray-600">ID</th>
+                    <th className="text-left px-4 py-3 font-semibold text-gray-600">Kode Booking</th>
                     <th className="text-left px-4 py-3 font-semibold text-gray-600">Layanan</th>
                     <th className="text-left px-4 py-3 font-semibold text-gray-600">Customer</th>
                     <th className="text-left px-4 py-3 font-semibold text-gray-600">Kendaraan</th>
@@ -77,7 +77,7 @@ export function AdminBookings() {
                   {filtered.map(b => (
                     <tr key={b.id} onClick={() => nav(`/admin/bookings/${b.id}`)}
                       className="hover:bg-gray-50 cursor-pointer transition-colors">
-                      <td className="px-4 py-3 text-xs text-gray-400 font-mono">{b.id?.substring(0, 8)}</td>
+                      <td className="px-4 py-3 text-xs text-gray-400 font-mono">{b.booking_code || b.id?.substring(0, 8)}</td>
                       <td className="px-4 py-3 font-medium text-gray-900">{b.service?.name || '-'}</td>
                       <td className="px-4 py-3 text-gray-600">{b.user?.name || '-'}</td>
                       <td className="px-4 py-3 text-gray-600">{b.vehicle?.brand} {b.vehicle?.model} <span className="text-gray-400">({b.vehicle?.plate})</span></td>

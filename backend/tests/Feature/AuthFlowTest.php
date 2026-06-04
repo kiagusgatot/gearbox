@@ -97,7 +97,7 @@ class AuthFlowTest extends TestCase
         $loginResponse = $this->postJson('/api/login', $loginData);
         $loginResponse->assertStatus(403)
             ->assertJsonFragment([
-                'message' => 'Email Anda belum diverifikasi. Silakan cek email Anda.'
+                'message' => 'Email belum diverifikasi. Silakan cek email Anda.'
             ]);
 
         // 3. Verify Email
@@ -146,7 +146,7 @@ class AuthFlowTest extends TestCase
 
         $forgotResponse->assertStatus(200)
             ->assertJsonFragment([
-                'message' => 'Link reset password telah dikirim ke email Anda.'
+                'message' => 'Link reset password berhasil dikirim ke email Anda.'
             ]);
 
         // Check if token exists in DB
@@ -177,7 +177,7 @@ class AuthFlowTest extends TestCase
 
         $resetResponse->assertStatus(200)
             ->assertJsonFragment([
-                'message' => 'Password Anda berhasil diubah. Silakan login kembali.'
+                'message' => 'Password berhasil diubah. Silakan login.'
             ]);
 
         // 3. Login with new password

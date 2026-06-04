@@ -13,6 +13,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\UploadController;
 
+use App\Http\Controllers\VerificationController;
+use App\Http\Controllers\PasswordResetController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -25,8 +28,14 @@ Route::middleware('api')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/user', [AuthController::class, 'user']);
-    Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
-    Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+    Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink']);
+    Route::post('/reset-password', [PasswordResetController::class, 'reset']);
+    
+    // Email Verification Routes
+    Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
+        ->middleware(['signed'])
+        ->name('verification.verify');
+    Route::post('/email/resend', [VerificationController::class, 'resend']);
     Route::post('/verify-email', [AuthController::class, 'verifyEmail']);
 
     // Status Checks

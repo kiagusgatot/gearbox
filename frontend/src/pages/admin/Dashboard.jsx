@@ -17,13 +17,13 @@ const ADMIN_ACTIONS = {
 const LOG_ICONS = {
   'booking.created':             { icon:Bell,         color:'text-yellow-600', bg:'bg-yellow-100' },
   'booking.assigned':            { icon:UserCheck,    color:'text-blue-600',   bg:'bg-blue-100' },
-  'booking.accepted':            { icon:CheckCircle,  color:'text-indigo-600', bg:'bg-indigo-100' },
+  'booking.accepted':            { icon:CheckCircle,  color:'text-blue-600',   bg:'bg-blue-100' },
   'booking.inspection_done':     { icon:ClipboardList,color:'text-cyan-600',   bg:'bg-cyan-100' },
   'booking.estimation_sent':     { icon:Send,         color:'text-amber-600',  bg:'bg-amber-100' },
   'booking.estimation_approved': { icon:CheckCircle,  color:'text-lime-600',   bg:'bg-lime-100' },
   'booking.estimation_rejected': { icon:Bell,         color:'text-red-600',    bg:'bg-red-100' },
-  'booking.service_started':     { icon:Play,         color:'text-violet-600', bg:'bg-violet-100' },
-  'booking.service_confirmed':   { icon:Wrench,       color:'text-purple-600', bg:'bg-purple-100' },
+  'booking.service_started':     { icon:Play,         color:'text-sky-600',    bg:'bg-sky-100' },
+  'booking.service_confirmed':   { icon:Wrench,       color:'text-blue-600',   bg:'bg-blue-100' },
   'booking.service_completed':   { icon:CheckCircle,  color:'text-green-600',  bg:'bg-green-100' },
   'booking.payment_confirmed':   { icon:CreditCard,   color:'text-orange-600', bg:'bg-orange-100' },
   'booking.completed':           { icon:CheckCircle,  color:'text-green-600',  bg:'bg-green-100' },
@@ -84,7 +84,7 @@ export function AdminDashboard() {
           <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Aksi Cepat</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
-              { to:'/admin/bookings', icon:ClipboardList, label:'Kelola Booking', desc:`${bookings.length} total`, color:'text-primary-600', bg:'bg-primary-50 hover:bg-primary-100' },
+              { to:'/admin/bookings', icon:ClipboardList, label:'Kelola Booking', desc:`${bookings.length} total`, color:'text-gray-900', bg:'bg-primary-50 hover:bg-primary-100' },
               { to:'/admin/payments', icon:CreditCard, label:'Proses Pembayaran', desc:`${waitingPayment.length} pending`, color:'text-orange-600', bg:'bg-orange-50 hover:bg-orange-100' },
               { to:'/admin/users',    icon:Users, label:'Kelola User', desc:'Manage accounts', color:'text-blue-600', bg:'bg-blue-50 hover:bg-blue-100' },
               { to:'/admin/services', icon:Settings, label:'Kelola Layanan', desc:'Manage services', color:'text-green-600', bg:'bg-green-50 hover:bg-green-100' },
@@ -106,7 +106,7 @@ export function AdminDashboard() {
                   <h2 className="font-bold text-gray-900">Perlu Aksi Anda</h2>
                   {actionNeeded.length>0 && <span className="px-2 py-0.5 bg-red-100 text-red-700 rounded-full text-xs font-bold">{actionNeeded.length}</span>}
                 </div>
-                <Link to="/admin/bookings" className="text-xs text-primary-600 hover:underline flex items-center gap-1">Lihat semua<ArrowRight size={12}/></Link>
+                <Link to="/admin/bookings" className="text-xs text-gray-900 font-bold hover:underline flex items-center gap-1">Lihat semua<ArrowRight size={12}/></Link>
               </div>
               {actionNeeded.length===0 ? <div className="px-5 py-8 text-center"><CheckCircle size={32} className="text-green-400 mx-auto mb-2"/><p className="text-sm text-gray-500">Semua up to date!</p></div> : (
                 <div className="divide-y divide-gray-100">
@@ -126,14 +126,14 @@ export function AdminDashboard() {
             <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
               <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
                 <h2 className="font-bold text-gray-900 flex items-center gap-2"><CreditCard size={18} className="text-orange-600"/>Menunggu Pembayaran {waitingPayment.length>0 && <span className="px-2 py-0.5 bg-orange-100 text-orange-700 rounded-full text-xs font-bold">{waitingPayment.length}</span>}</h2>
-                <Link to="/admin/payments" className="text-xs text-primary-600 hover:underline flex items-center gap-1">Kelola<ArrowRight size={12}/></Link>
+                <Link to="/admin/payments" className="text-xs text-gray-900 font-bold hover:underline flex items-center gap-1">Kelola<ArrowRight size={12}/></Link>
               </div>
               {waitingPayment.length===0 ? <div className="px-5 py-8 text-center"><p className="text-sm text-gray-500">Tidak ada pembayaran pending</p></div> : (
                 <div className="divide-y divide-gray-100">
                   {waitingPayment.slice(0,4).map(b => (
                     <div key={b.id} onClick={()=>nav(`/admin/bookings/${b.id}`)} className="px-5 py-3 flex items-center gap-4 hover:bg-gray-50 cursor-pointer transition-colors">
                       <div className="flex-1 min-w-0"><p className="text-sm font-medium text-gray-900 truncate">{b.service?.name} — {b.user?.name}</p><p className="text-xs text-gray-500">{b.vehicle?.plate} · {formatDate(b.scheduled_date)}</p></div>
-                      <p className="text-sm font-bold text-primary-600 whitespace-nowrap">{formatCurrency(b.service?.base_price||0)}</p>
+                      <p className="text-sm font-bold text-gray-900 whitespace-nowrap">{formatCurrency(b.service?.base_price||0)}</p>
                       <ArrowRight size={16} className="text-gray-400 flex-shrink-0"/>
                     </div>
                   ))}

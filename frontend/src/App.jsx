@@ -12,6 +12,7 @@ import { NotFound }       from './pages/NotFound';
 import { ForgotPassword } from './pages/ForgotPassword';
 import { ResetPassword }  from './pages/ResetPassword';
 import { VerifyEmail }    from './pages/VerifyEmail';
+import { EmailVerified }  from './pages/EmailVerified';
 
 // Customer
 import { Home }          from './pages/customer/Home';
@@ -56,11 +57,12 @@ export default function App() {
           <Route path="/"             element={<CustomerLayout><Home/></CustomerLayout>}/>
           <Route path="/services"     element={<CustomerLayout><Services/></CustomerLayout>}/>
           <Route path="/services/:id" element={<CustomerLayout><ServiceDetail/></CustomerLayout>}/>
-          <Route path="/login"        element={<CustomerLayout><Login/></CustomerLayout>}/>
-          <Route path="/register"     element={<CustomerLayout><Register/></CustomerLayout>}/>
-          <Route path="/forgot-password" element={<CustomerLayout><ForgotPassword/></CustomerLayout>}/>
-          <Route path="/reset-password"  element={<CustomerLayout><ResetPassword/></CustomerLayout>}/>
-          <Route path="/verify-email"    element={<CustomerLayout><VerifyEmail/></CustomerLayout>}/>
+          <Route path="/login"        element={<Login/>}/>
+          <Route path="/register"     element={<Register/>}/>
+          <Route path="/forgot-password" element={<ForgotPassword/>}/>
+          <Route path="/reset-password"  element={<ResetPassword/>}/>
+          <Route path="/verify-email"    element={<VerifyEmail/>}/>
+          <Route path="/email-verified"  element={<EmailVerified/>}/>
 
           <Route path="/bookings"     element={<CustomerLayout><ProtectedRoute roles={['customer']}><MyBookings/></ProtectedRoute></CustomerLayout>}/>
           <Route path="/bookings/:id" element={<CustomerLayout><ProtectedRoute roles={['customer']}><BookingDetail/></ProtectedRoute></CustomerLayout>}/>

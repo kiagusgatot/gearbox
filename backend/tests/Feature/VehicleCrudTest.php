@@ -45,6 +45,7 @@ class VehicleCrudTest extends TestCase
 
         Schema::create('bookings', function ($table) {
             $table->string('id')->primary();
+            $table->string('booking_code')->nullable()->unique();
             $table->string('user_id');
             $table->string('vehicle_id');
             $table->string('service_id')->nullable();

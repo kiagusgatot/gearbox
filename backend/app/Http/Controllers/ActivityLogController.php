@@ -13,7 +13,7 @@ class ActivityLogController extends Controller
             return response()->json(['message' => 'Forbidden. Only admin can access this resource.'], 403);
         }
 
-        $query = \App\Models\ActivityLog::with('actor');
+        $query = \App\Models\ActivityLog::with(['actor', 'booking']);
 
         if ($request->filled('booking_id')) {
             $query->where('booking_id', $request->booking_id);
@@ -49,6 +49,7 @@ class ActivityLogController extends Controller
             return [
                 'id' => $log->id,
                 'booking_id' => $log->booking_id,
+                'booking_code' => $log->booking?->booking_code,
                 'actor' => $actorData,
                 'action' => $log->action,
                 'description' => $log->description,
@@ -75,7 +76,7 @@ class ActivityLogController extends Controller
             return response()->json(['message' => 'Forbidden. Only admin can access this resource.'], 403);
         }
 
-        $query = \App\Models\ActivityLog::with('actor')->where('booking_id', $bookingId);
+        $query = \App\Models\ActivityLog::with(['actor', 'booking'])->where('booking_id', $bookingId);
 
         $limit = $request->input('limit', 20);
         $paginator = $query->orderBy('created_at', 'desc')->paginate($limit);
@@ -99,6 +100,7 @@ class ActivityLogController extends Controller
             return [
                 'id' => $log->id,
                 'booking_id' => $log->booking_id,
+                'booking_code' => $log->booking?->booking_code,
                 'actor' => $actorData,
                 'action' => $log->action,
                 'description' => $log->description,

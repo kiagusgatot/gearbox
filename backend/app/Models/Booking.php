@@ -13,7 +13,7 @@ class Booking extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        'id', 'user_id', 'vehicle_id', 'service_id', 'mechanic_id',
+        'id', 'booking_code', 'user_id', 'vehicle_id', 'service_id', 'mechanic_id',
         'scheduled_date', 'scheduled_time', 'status', 'notes'
     ];
 
@@ -141,5 +141,41 @@ class Booking extends Model
         $service = $this->service;
         $estimatedCost = $this->inspection?->estimated_cost ?? $service->base_price;
         return $estimatedCost - $this->totalPaid();
+    }
+
+    protected static function booted()
+    {
+        static::creating(function ($booking) {
+            if (empty($booking->booking_code)) {
+                $booking->booking_code = static::generateBookingCode();
+            }
+        });
+    }
+
+    public static function generateBookingCode($date = null)
+    {
+        $date = $date ? \Carbon\Carbon::parse($date) : now();
+        $dateStr = $date->format('Ymd');
+        $prefix = 'GBX-' . $dateStr . '-';
+        
+        $lastBooking = static::where('booking_code', 'like', $prefix . '%')
+            ->orderBy('booking_code', 'desc')
+            ->first();
+        
+        if ($lastBooking) {
+            $parts = explode('-', $lastBooking->booking_code);
+            $seq = intval(end($parts)) + 1;
+        } else {
+            $seq = 1;
+        }
+        
+        $code = $prefix . str_pad($seq, 4, '0', STR_PAD_LEFT);
+        
+        while (static::where('booking_code', $code)->exists()) {
+            $seq++;
+            $code = $prefix . str_pad($seq, 4, '0', STR_PAD_LEFT);
+        }
+        
+        return $code;
     }
 }

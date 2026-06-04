@@ -81,12 +81,12 @@ export function Sidebar() {
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-800">
           <Link to={isAdmin ? '/admin' : '/mechanic'} className="flex items-center gap-2.5">
-            <div className="w-9 h-9 bg-primary-600 rounded-xl flex items-center justify-center flex-shrink-0">
-              <Wrench size={18} className="text-white"/>
+            <div className="w-9 h-9 bg-primary-500 rounded-xl flex items-center justify-center flex-shrink-0">
+              <Wrench size={18} className="text-gray-900"/>
             </div>
             <div>
-              <p className="text-sm font-bold text-white leading-tight">Booking</p>
-              <p className="text-xs text-gray-400 leading-tight">Bengkel</p>
+              <p className="text-sm font-bold text-white leading-tight">GEARBOX</p>
+              <p className="text-xs text-primary-500 leading-tight">{isAdmin ? 'Admin Portal' : 'Mekanik Portal'}</p>
             </div>
           </Link>
           <button
@@ -102,9 +102,9 @@ export function Sidebar() {
         <nav className="flex-1 py-4 px-3 space-y-1 overflow-y-auto">
           {links.map(link => (
             <Link key={link.to} to={link.to}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all ${
                 isActive(link.to)
-                  ? 'bg-primary-600 text-white shadow-lg shadow-primary-600/20'
+                  ? 'bg-primary-500 text-gray-900 shadow-lg shadow-primary-500/20'
                   : 'text-gray-400 hover:bg-gray-800 hover:text-white'
               }`}>
               <link.icon size={20} className="flex-shrink-0"/>

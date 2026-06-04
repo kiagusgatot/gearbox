@@ -45,7 +45,7 @@ export function MechanicHistory() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-gray-50 border-b border-gray-200">
-                    <th className="text-left px-4 py-3 font-semibold text-gray-600">ID</th>
+                    <th className="text-left px-4 py-3 font-semibold text-gray-600">Kode Booking</th>
                     <th className="text-left px-4 py-3 font-semibold text-gray-600">Layanan</th>
                     <th className="text-left px-4 py-3 font-semibold text-gray-600">Customer</th>
                     <th className="text-left px-4 py-3 font-semibold text-gray-600">Kendaraan</th>
@@ -58,7 +58,7 @@ export function MechanicHistory() {
                   {filtered.map(b => (
                     <tr key={b.id} onClick={() => nav(`/mechanic/jobs/${b.id}`)}
                       className="hover:bg-gray-50 cursor-pointer transition-colors">
-                      <td className="px-4 py-3 text-xs text-gray-400 font-mono">{b.id?.substring(0, 8)}</td>
+                      <td className="px-4 py-3 text-xs text-gray-400 font-mono">{b.booking_code || b.id?.substring(0, 8)}</td>
                       <td className="px-4 py-3 font-medium text-gray-900">{b.service?.name || '-'}</td>
                       <td className="px-4 py-3 text-gray-600">{b.user?.name || '-'}</td>
                       <td className="px-4 py-3 text-gray-600">{b.vehicle?.brand} {b.vehicle?.model} <span className="text-gray-400">({b.vehicle?.plate})</span></td>

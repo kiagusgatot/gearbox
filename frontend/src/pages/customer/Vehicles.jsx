@@ -86,8 +86,8 @@ export function Vehicles() {
             {list.map(v => (
               <div key={v.id} className="card hover:shadow-md transition-shadow">
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <Car size={24} className="text-primary-600"/>
+                  <div className="w-12 h-12 bg-primary-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <Car size={24} className="text-gray-900"/>
                   </div>
                   <div className="flex-1 min-w-0">
                     <h3 className="font-bold text-gray-900">{v.brand} {v.model}</h3>
@@ -96,7 +96,7 @@ export function Vehicles() {
                       <span className="flex items-center gap-1.5"><Calendar size={14} className="text-green-500"/>{v.year}</span>
                       <span className="flex items-center gap-1.5"><Palette size={14} className="text-pink-500"/>{v.color || '-'}</span>
                       {v.transmission && <span className="flex items-center gap-1.5"><Settings size={14} className="text-orange-500"/>{v.transmission === 'automatic' ? 'Otomatis' : 'Manual'}</span>}
-                      {v.fuel_type && <span className="flex items-center gap-1.5"><Fuel size={14} className="text-purple-500"/>{v.fuel_type}</span>}
+                      {v.fuel_type && <span className="flex items-center gap-1.5"><Fuel size={14} className="text-amber-500"/>{v.fuel_type}</span>}
                     </div>
                   </div>
                   <div className="flex items-center gap-1 flex-shrink-0">
@@ -153,8 +153,8 @@ export function Vehicles() {
               <div className="flex gap-2">
                 {TRANSMISSIONS.map(t => (
                   <button key={t.value} type="button" onClick={() => setForm({...form, transmission: t.value})}
-                    className={`flex-1 p-2.5 rounded-xl border-2 text-sm font-medium text-center transition-all ${
-                      form.transmission === t.value ? 'border-primary-600 bg-primary-50 text-primary-700' : 'border-gray-200 bg-white text-gray-600 hover:border-primary-300'
+                    className={`flex-1 p-2.5 rounded-xl border-2 text-sm font-bold text-center transition-all ${
+                      form.transmission === t.value ? 'border-primary-500 bg-primary-50 text-gray-900 font-bold' : 'border-gray-200 bg-white text-gray-600 hover:border-primary-500'
                     }`}>{t.label}</button>
                 ))}
               </div>
@@ -172,7 +172,7 @@ export function Vehicles() {
             <div className="p-4 bg-gray-50 border border-gray-200 rounded-xl">
               <p className="text-xs text-gray-400 mb-2">Preview</p>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center"><Car size={20} className="text-primary-600"/></div>
+                <div className="w-10 h-10 bg-primary-500 rounded-lg flex items-center justify-center"><Car size={20} className="text-gray-900"/></div>
                 <div>
                   <p className="font-bold text-gray-900">{form.brand} {form.model}</p>
                   <p className="text-xs text-gray-500">{form.plate || '—'} · {form.year || '—'} · {form.color || '—'} · {form.transmission === 'automatic' ? 'AT' : 'MT'} · {form.fuel_type}</p>
