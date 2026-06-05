@@ -41,3 +41,10 @@ frontend/cache/
 frontend/.env
 frontend/.env.local
 frontend/.env.*.local
+
+# Project specific exclusions
+.npmrc
+.phpunit.result.cache
+document/
+DATABASE_SCHEMA_*.sql
+*.sql
