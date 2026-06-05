@@ -7,8 +7,13 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\URL;
 
-class VerifyEmailNotification extends Notification
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Bus\Queueable;
+
+class VerifyEmailNotification extends Notification implements ShouldQueue
 {
+    use Queueable;
+
     public function via($notifiable) { return ['mail']; }
 
     public function toMail($notifiable)

@@ -49,9 +49,9 @@ class AuthController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string',
-            'email' => 'required|email|unique:users,email',
-            'phone' => 'required|string|unique:users,phone',
-            'password' => 'required|min:6',
+            'email' => 'required|email|unique:users',
+            'phone' => 'required|unique:users',
+            'password' => 'required|min:8|confirmed',
         ]);
 
         $validated['password'] = bcrypt($validated['password']);
@@ -87,7 +87,8 @@ class AuthController extends Controller
         try {
             $user->sendEmailVerificationNotification();
         } catch (\Exception $e) {
-            Log::error("Gagal mengirim email verifikasi ke {$user->email} via SMTP: " . $e->getMessage());
+            Log::error('Email verification failed: ' . $e->getMessage());
+            // Jangan gagalkan register hanya karena email gagal kirim
         }
 
         return response()->json([
