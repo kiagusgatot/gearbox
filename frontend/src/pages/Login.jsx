@@ -89,7 +89,38 @@ export function Login() {
           </div>
           
           <h1 className="text-2xl font-bold text-gray-900 mb-1">Masuk ke Akun Anda</h1>
-          <p className="text-gray-500 mb-8">Kelola booking dan pantau service kendaraan</p>
+          <p className="text-gray-500 mb-6">Kelola booking dan pantau service kendaraan</p>
+          
+          {/* Test Credentials Container */}
+          <div className="mb-6 p-4 bg-gray-50 border border-gray-200 rounded-xl text-sm">
+            <h3 className="font-bold text-gray-900 mb-3 flex items-center justify-between">
+              <span>Test Credentials</span>
+              <span className="text-[10px] uppercase tracking-wider bg-gray-200 text-gray-700 px-2 py-0.5 rounded-full font-bold">Development</span>
+            </h3>
+            <div className="grid grid-cols-2 gap-2 text-gray-800">
+              <button 
+                type="button" 
+                onClick={() => { setEmail('admin@gearbox.co.id'); setPassword('password123'); }}
+                className="text-left px-3 py-2 bg-white rounded-lg border border-gray-200 hover:border-yellow-400 hover:bg-yellow-50 transition-all group"
+              >
+                <span className="block font-bold group-hover:text-yellow-700">Admin</span>
+              </button>
+              <button 
+                type="button" 
+                onClick={() => { setEmail('ahmad@gearbox.co.id'); setPassword('password123'); }}
+                className="text-left px-3 py-2 bg-white rounded-lg border border-gray-200 hover:border-yellow-400 hover:bg-yellow-50 transition-all group"
+              >
+                <span className="block font-bold group-hover:text-yellow-700">Mechanic</span>
+              </button>
+              <button 
+                type="button" 
+                onClick={() => { setEmail('budi@gearbox.co.id'); setPassword('password123'); }}
+                className="text-left px-3 py-2 bg-white rounded-lg border border-gray-200 hover:border-yellow-400 hover:bg-yellow-50 transition-all group col-span-2"
+              >
+                <span className="block font-bold group-hover:text-yellow-700">Customer</span>
+              </button>
+            </div>
+          </div>
           
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm mb-5">

@@ -1,0 +1,45 @@
+﻿#!/bin/bash
+TARGET="/var/www/student10"
+mkdir -p $TARGET
+cd /home/student10/app.git
+if git show-ref --verify --quiet refs/heads/main; then
+    BRANCH="main"
+elif git show-ref --verify --quiet refs/heads/master; then
+    BRANCH="master"
+else
+    BRANCH=$(git branch --format='%(refname:short)' | head -1)
+fi
+GIT_WORK_TREE=$TARGET git checkout -f $BRANCH
+chown -R student10:www-data $TARGET
+chmod -R 755 $TARGET
+
+if [ -f "$TARGET/composer.json" ] && [ -d "$TARGET/public" ]; then
+    cd $TARGET
+    if [ ! -d "vendor" ]; then
+        composer install --no-dev --optimize-autoloader --no-interaction 2>/dev/null || echo "[WARNING] composer install gagal"
+    fi
+    ENV_CREATED=false
+    if [ ! -f ".env" ] && [ -f ".env.example" ]; then
+        cp .env.example .env
+        sed -i 's|DB_CONNECTION=sqlite|DB_CONNECTION=mysql|g' .env 2>/dev/null || true
+        sed -i 's|DB_CONNECTION=pgsql|DB_CONNECTION=mysql|g' .env 2>/dev/null || true
+        sed -i 's|DB_HOST=.*|DB_HOST=127.0.0.1|g' .env 2>/dev/null || true
+        sed -i 's|DB_PORT=.*|DB_PORT=3306|g' .env 2>/dev/null || true
+        sed -i "s|DB_DATABASE=.*|DB_DATABASE=db_student10|g" .env 2>/dev/null || true
+        sed -i "s|DB_USERNAME=.*|DB_USERNAME=mysql_student10|g" .env 2>/dev/null || true
+        sed -i "s|DB_PASSWORD=.*|DB_PASSWORD=1X8g6yOaQ55F|g" .env 2>/dev/null || true
+        php artisan key:generate --force 2>/dev/null || echo "[WARNING] key:generate gagal"
+        ENV_CREATED=true
+    fi
+    chmod -R 775 $TARGET/storage $TARGET/bootstrap/cache 2>/dev/null || true
+    chown -R student10:www-data $TARGET/storage $TARGET/bootstrap/cache 2>/dev/null || true
+    php artisan migrate --force 2>/dev/null || echo "[WARNING] migrate gagal"
+    if [ "$ENV_CREATED" = "true" ]; then
+        php artisan db:seed --force 2>/dev/null || echo "[WARNING] seed gagal"
+        echo "[DEPLOY OK] Laravel deployed + migrated + seeded"
+    else
+        echo "[DEPLOY OK] Laravel deployed + migrated"
+    fi
+else
+    echo "[DEPLOY OK] Static deployed"
+fi

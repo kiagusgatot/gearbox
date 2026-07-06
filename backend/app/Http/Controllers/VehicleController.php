@@ -25,6 +25,11 @@ class VehicleController extends Controller
 
     public function store(Request $request)
     {
+        $authUser = $this->getAuthenticatedUser();
+        if ($authUser && !$authUser->isAdmin()) {
+            $request->merge(['user_id' => $authUser->id]);
+        }
+
         $validated = $request->validate([
             "user_id" => "required|exists:users,id",
             "brand" => "required|string|max:100",
