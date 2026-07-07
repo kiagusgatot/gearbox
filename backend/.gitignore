@@ -28,3 +28,7 @@ Thumbs.db
 test.php
 test_db.php
 .env.testing
+
+# Debugging files
+crash.txt
+out.txt
