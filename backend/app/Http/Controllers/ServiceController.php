@@ -13,9 +13,10 @@ class ServiceController extends Controller
     public function index()
     {
         $services = Service::all()->map(function ($s) {
-            $ratingInfo = Review::where('service_id', $s->id)
-                ->selectRaw('AVG(rating) as avg_rating, COUNT(*) as count')
-                ->first();
+            $ratingInfo = Review::whereHas('booking', function ($q) use ($s) {
+                $q->where('service_id', $s->id);
+            })->selectRaw('AVG(rating) as avg_rating, COUNT(*) as count')
+              ->first();
                 
             return [
                 'id' => $s->id,
@@ -73,12 +74,14 @@ class ServiceController extends Controller
     {
         $s = Service::findOrFail($id);
         
-        $ratingInfo = Review::where('service_id', $s->id)
-            ->selectRaw('AVG(rating) as avg_rating, COUNT(*) as count')
-            ->first();
+        $ratingInfo = Review::whereHas('booking', function ($q) use ($s) {
+            $q->where('service_id', $s->id);
+        })->selectRaw('AVG(rating) as avg_rating, COUNT(*) as count')
+          ->first();
             
-        $recentReviews = Review::where('service_id', $s->id)
-            ->with('customer')
+        $recentReviews = Review::whereHas('booking', function ($q) use ($s) {
+            $q->where('service_id', $s->id);
+        })->with('customer')
             ->orderBy('created_at', 'desc')
             ->limit(5)
             ->get()
@@ -227,7 +230,9 @@ class ServiceController extends Controller
         $limit = (int)$request->query('limit', 10);
         $sort = $request->query('sort', '-created_at');
 
-        $query = Review::where('service_id', $id)->with('customer');
+        $query = Review::whereHas('booking', function ($q) use ($id) {
+            $q->where('service_id', $id);
+        })->with('customer');
 
         if ($sort === '-created_at') {
             $query->orderBy('created_at', 'desc');
@@ -240,7 +245,7 @@ class ServiceController extends Controller
         $data = collect($paginator->items())->map(function ($r) {
             return [
                 'id' => $r->id,
-                'service_id' => $r->service_id,
+                'service_id' => $id,
                 'booking_id' => $r->booking_id,
                 'user_id' => $r->user_id,
                 'user_name' => $r->customer->name ?? 'Anonymous',

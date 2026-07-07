@@ -14,7 +14,7 @@ class Review extends Model
 
     protected $fillable = [
         'id', 'booking_id', 'user_id', 'mechanic_id', 'rating',
-        'title', 'comment', 'photos', 'is_verified_purchase', 'service_id'
+        'title', 'comment', 'photos', 'is_verified_purchase'
     ];
 
     protected $casts = [
@@ -26,11 +26,6 @@ class Review extends Model
     public function booking()
     {
         return $this->belongsTo(Booking::class);
-    }
-
-    public function service()
-    {
-        return $this->belongsTo(Service::class);
     }
 
     public function customer()

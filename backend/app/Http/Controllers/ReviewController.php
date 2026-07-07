@@ -10,11 +10,11 @@ class ReviewController extends Controller
 {
     public function index()
     {
-        $reviews = Review::with(['customer', 'service', 'mechanic'])->get()->map(function ($r) {
+        $reviews = Review::with(['customer', 'booking.service', 'mechanic'])->get()->map(function ($r) {
             return [
                 'id' => $r->id,
                 'booking_id' => $r->booking_id,
-                'service_id' => $r->service_id,
+                'service_id' => $r->booking->service_id ?? null,
                 'user_id' => $r->user_id,
                 'user_name' => $r->customer->name ?? 'Anonymous',
                 'rating' => (int)$r->rating,
@@ -53,13 +53,11 @@ class ReviewController extends Controller
         // Merge properties from booking to request for absolute consistency
         $request->merge([
             'user_id' => $booking->user_id,
-            'mechanic_id' => $booking->mechanic_id,
-            'service_id' => $booking->service_id
+            'mechanic_id' => $booking->mechanic_id
         ]);
 
         $validated = $request->validate([
             "booking_id" => "required|exists:bookings,id",
-            "service_id" => "required|exists:services,id",
             "user_id" => "required|exists:users,id",
             "mechanic_id" => "nullable|exists:users,id",
             "rating" => "required|integer|min:1|max:5",
@@ -83,7 +81,7 @@ class ReviewController extends Controller
             'data' => [
                 'id' => $item->id,
                 'booking_id' => $item->booking_id,
-                'service_id' => $item->service_id,
+                'service_id' => $item->booking->service_id ?? null,
                 'user_id' => $item->user_id,
                 'rating' => (int)$item->rating,
                 'comment' => $item->comment,
@@ -94,12 +92,12 @@ class ReviewController extends Controller
 
     public function show($id)
     {
-        $r = Review::findOrFail($id);
+        $r = Review::with('booking')->findOrFail($id);
         return response()->json([
             'data' => [
                 'id' => $r->id,
                 'booking_id' => $r->booking_id,
-                'service_id' => $r->service_id,
+                'service_id' => $r->booking->service_id ?? null,
                 'user_id' => $r->user_id,
                 'user_name' => $r->customer->name ?? 'Anonymous',
                 'rating' => (int)$r->rating,
@@ -111,7 +109,7 @@ class ReviewController extends Controller
 
     public function update(Request $request, $id)
     {
-        $item = Review::findOrFail($id);
+        $item = Review::with('booking')->findOrFail($id);
         
         $validated = $request->validate([
             "rating" => "nullable|integer|min:1|max:5",
@@ -123,7 +121,7 @@ class ReviewController extends Controller
             'data' => [
                 'id' => $item->id,
                 'booking_id' => $item->booking_id,
-                'service_id' => $item->service_id,
+                'service_id' => $item->booking->service_id ?? null,
                 'user_id' => $item->user_id,
                 'rating' => (int)$item->rating,
                 'comment' => $item->comment,
