@@ -48,3 +48,4 @@ frontend/.env.*.local
 document/
 DATABASE_SCHEMA_*.sql
 *.sql
+!backend/database/schema/mysql-schema.sql
