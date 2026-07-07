@@ -1,5 +1,4 @@
-[providers.php]
-version = "8.4"
+
 
 [phases.setup]
 nixPkgs = ["...", "mysql"]
