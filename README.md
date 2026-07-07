@@ -117,12 +117,23 @@ MAIL_PORT=2525
 VITE_API_URL=http://127.0.0.1:8000/api
 ```
 
-### Default Accounts
+### Default Accounts & Dummy Data
+> [!WARNING]
+> **DANGER: DATA WIPE**
+> Menjalankan perintah `php artisan migrate:fresh --seed` akan **MENGHAPUS TOTAL (DROP)** semua data yang ada di database lokal Anda dan menggantinya dengan data dummy dari seeder. Jangan jalankan perintah ini jika Anda memiliki data manual yang penting! Untuk testing migration secara aman, gunakan database testing terpisah (baca bagian Testing Workflow).
+
+**Test Accounts:**
 | Role | Email | Password |
 |------|-------|----------|
 | Admin | admin@gearbox.co.id | password123 |
 | Customer | budi@gearbox.co.id | password123 |
 | Mechanic | ahmad@gearbox.co.id | password123 |
+
+**Dummy Services:**
+1. Ganti Oli
+2. Service Umum
+3. Kelistrikan
+4. Tune-Up
 
 ---
 

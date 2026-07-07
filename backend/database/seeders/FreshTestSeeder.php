@@ -17,6 +17,13 @@ class FreshTestSeeder extends Seeder
      */
     public function run(): void
     {
+        // =========================================================================
+        // ⚠️ WARNING: DESTRUCTIVE ACTION
+        // Menjalankan seeder ini (via migrate:fresh --seed) akan menghapus TOTAL
+        // seluruh data yang ada di database dan menggantinya dengan data dummy.
+        // Jangan jalankan ini jika Anda ingin mempertahankan data manual Anda!
+        // =========================================================================
+
         // 1. Truncate all tables in the correct foreign key order
         Schema::disableForeignKeyConstraints();
 
