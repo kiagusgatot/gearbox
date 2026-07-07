@@ -33,7 +33,9 @@ export function Navbar() {
   const isActive = (p) => loc.pathname === p || (p !== '/' && loc.pathname.startsWith(p));
 
   useEffect(() => {
-    const handler = (e) => { if (dropdownRef.current && !dropdownRef.current.contains(e.target)) setDropdownOpen(false); };
+    const handler = (e) => { 
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) setDropdownOpen(false); 
+    };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
   }, []);
@@ -70,7 +72,7 @@ export function Navbar() {
             <div className="flex items-center gap-2 pl-4 border-l border-gray-200">
               {user && isCustomer ? (
                 <div className="relative" ref={dropdownRef}>
-                  <button onClick={() => setDropdownOpen(!dropdownOpen)}
+                  <button onClick={() => setDropdownOpen(prev => !prev)}
                     className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-xl transition-colors">
                     <div className="w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center">
                       <User size={16} className="text-gray-900"/>
